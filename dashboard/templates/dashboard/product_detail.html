@@ -2,34 +2,38 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Detail</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-    <h1>Product Detail</h1>
-    <p>Name: {{ product.name }}</p>
-    <p>Description: {{ product.description }}</p>
-    <p>Status: {{ product.status }}</p>
-    <p>IPFS Hash: {{ product.ipfs_hash }}</p>
-    <p>Solana Tx Hash: {{ product.solana_tx_hash }}</p>
-    
-    <p>Debug: Certificate Image Field: {{ product.certificate_image }}</p>
-    
-    {% if product.certificate_image %}
-        <p>
-            Certificate: 
-            <a href="{{ product.certificate_image.url }}" target="_blank">
-                View Certificate
-            </a>
-        </p>
-    {% else %}
-        <p>No certificate image available</p>
-    {% endif %}
-    
-    <a href="{% url 'edit_product' product.id %}">Edit</a>
-    <form action="{% url 'delete_product' product.id %}" method="post" style="display:inline;">
-        {% csrf_token %}
-        <button type="submit">Delete</button>
-    </form>
-    <a href="{% url 'push_product' product.id %}">Push</a>
+<body class="bg-gray-100">
+    <div class="container mx-auto px-4 py-8">
+        <a href="{% url 'dashboard' %}" class="inline-block mb-4 px-4 py-2 bg-gray-300 text-gray-800 rounded hover:bg-gray-400 transition duration-300">
+            &larr; Back to Dashboard
+        </a>
+        <h1 class="text-3xl font-bold mb-8">Product Detail</h1>
+        <div class="bg-white p-6 rounded shadow">
+            <h2 class="text-2xl font-semibold mb-4">{{ product.name }}</h2>
+            <p class="mb-2"><strong>Description:</strong> {{ product.description }}</p>
+            <p class="mb-2"><strong>Status:</strong> {{ product.status }}</p>
+            <p class="mb-2"><strong>IPFS Hash:</strong> {{ product.ipfs_hash }}</p>
+            <p class="mb-2"><strong>Solana Transaction Hash:</strong> {{ product.solana_tx_hash }}</p>
+            
+            {% if product.certificate_image %}
+                <p class="mb-2"><strong>Certificate Image:</strong> <a href="{{ product.certificate_image.url }}" class="text-blue-600 hover:underline">View Certificate</a></p>
+            {% else %}
+                <p class="mb-2"><strong>Certificate Image:</strong> No certificate image available</p>
+            {% endif %}
+
+            <div class="mt-6">
+                <a href="{% url 'edit_product' product.id %}" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Edit</a>
+                <form method="POST" action="{% url 'delete_product' product.id %}" class="inline-block ml-4">
+                    {% csrf_token %}
+                    <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">Delete</button>
+                </form>
+                <a href="{% url 'push_product' product.id %}" class="ml-4 px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600">Push Product</a>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
